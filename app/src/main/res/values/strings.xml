@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">My Favorite Music</string>
+
+    <string name="title_youtube">Youtube</string>
+    <string name="title_letra">Letra</string>
+    <string name="carregando">Carregando...</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
