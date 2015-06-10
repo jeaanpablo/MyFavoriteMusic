@@ -10,6 +10,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -27,11 +30,11 @@ import org.json.JSONObject;
  */
 
 
-public class LetraFragment extends Fragment implements YouTubePlayer.OnInitializedListener {
+public class LetraFragment extends Fragment{
     YouTubePlayerSupportFragment youtubePlayerFragment;
 
     TextView status = null;
-    private YouTubePlayer activePlayer;
+    WebView video;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,67 +57,28 @@ public class LetraFragment extends Fragment implements YouTubePlayer.OnInitializ
 
         this.status = (TextView) letraFragmentView.findViewById(R.id.status);
 
+        video = (WebView) letraFragmentView .findViewById(R.id.videoViewLetra);
+
 
         return letraFragmentView;
     }
 
     @Override
     public void onResume() {
+        video.getSettings().setJavaScriptEnabled(true);
+        //video.addJavascriptInterface(this, "FragmentYoutube");
+        video.getSettings().setPluginState(WebSettings.PluginState.ON);
+        // video.getSettings().setUserAgent(USER_MOBILE);
+        video.setWebChromeClient(new WebChromeClient() {
+        });
 
-        youtubePlayerFragment = new YouTubePlayerSupportFragment();
-        youtubePlayerFragment.setRetainInstance(false);
-        youtubePlayerFragment.initialize(Configuration.DEVELOPER_KEY, this);
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.youtube_player_letra, youtubePlayerFragment);
-        fragmentTransaction.commit();
+        final String mimeType = "text/html";
+        final String encoding = "UTF-8";
+        String html = getHTML("5SJoKBS237g");
+        video.loadDataWithBaseURL("", html, mimeType, encoding, "");
 
 
         super.onResume();
-    }
-
-    @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
-        activePlayer = youTubePlayer;
-
-        if (!wasRestored) {
-            activePlayer.loadVideo(Configuration.YOUTUBE_VIDEO_CODE);
-            activePlayer.play();
-            activePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
-
-        }
-
-        activePlayer.setPlaybackEventListener(new YouTubePlayer.PlaybackEventListener() {
-            @Override
-            public void onPlaying() {
-
-            }
-
-            @Override
-            public void onPaused() {
-                activePlayer.play();
-            }
-
-            @Override
-            public void onStopped() {
-
-            }
-
-            @Override
-            public void onBuffering(boolean b) {
-
-            }
-
-            @Override
-            public void onSeekTo(int i) {
-
-            }
-        });
-    }
-
-    @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-
     }
 
 
@@ -140,6 +104,19 @@ public class LetraFragment extends Fragment implements YouTubePlayer.OnInitializ
 
             }
         }
+    }
+
+    public String getHTML(String videoId) {
+
+        String html =
+                "<iframe class=\"youtube-player\" "
+                        + "style=\"border: 0; width: 100%; height: 95%;"
+                        + "padding:0px; margin:0px\" "
+                        + "id=\"ytplayer\" type=\"text/html\" "
+                        + "src=\"http://www.youtube.com/embed/" + videoId
+                        + "?fs=0\" frameborder=\"0\" " + "allowfullscreen autobuffer "
+                        + "controls onclick=\"this.play()\">\n" + "</iframe>\n";
+        return html;
     }
 
 

@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
     <TextView
         android:id="@+id/status"
@@ -15,16 +15,13 @@
         android:text="@string/carregando"
         />
 
-    <FrameLayout
-        android:id="@+id/youtube_player_letra"
-        android:padding="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="364dp"
+        <WebView
+            android:id="@+id/videoViewLetra"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"/>
 
-        android:focusable="true">
 
         <requestFocus />
-    </FrameLayout>
     </LinearLayout>
 
 

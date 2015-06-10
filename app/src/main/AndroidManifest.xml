@@ -3,6 +3,7 @@
     package="com.jeanpablobosso.myfavoritemusic" >
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
 
     <application
